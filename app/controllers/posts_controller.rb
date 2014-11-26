@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-
+before_filter :post, only: [:show, :edit, :update, :destroy]
 
   def index
     # instance param
@@ -20,6 +20,26 @@ class PostsController < ApplicationController
     #flash[:notice] = "Post was succesfully created"
     redirect_to posts_path, notice: "Post was succesfully created"
   end
+
+  def edit 
+  end
+
+  def update
+    @post.assign_attributes(post_params)
+    if @post.save
+      flash[:notice] = "Post was succesfully updated"
+    else
+      flash[:notice] = "Post was not succesfully updated"
+    end
+    redirect_to post_path(@post)
+  end
+
+  def destroy
+    @post.destroy
+      flash[:notice] = "Post was succesfully deleted"
+    redirect_to posts_path
+  end
+
 
   private
     def post

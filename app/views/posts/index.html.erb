@@ -8,6 +8,13 @@
 		    <span>
 		        Post has <%= pluralize post.comments.count, 'comment' %>
 		    </span>
+		    <span>
+		        <%= link_to "edit post", edit_post_path(post) %>
+		    </span>
+
+		    <span>
+		        <%= link_to "delete post", post_path(post), method: :delete, confirm: 'Are you sure?' %>
+		    </span>
 		</li>
 	<% end %>
 </ul>
