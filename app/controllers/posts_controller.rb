@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
-before_filter :post, only: [:show, :edit, :update, :destroy]
-
+before_action :post, only: [:show, :edit, :update, :destroy]
+before_action :authenticate_user!, only: [:show]
   def index
     # instance param
     @posts = Post.all
@@ -40,6 +40,7 @@ before_filter :post, only: [:show, :edit, :update, :destroy]
     redirect_to posts_path
   end
 
+  
 
   private
     def post
