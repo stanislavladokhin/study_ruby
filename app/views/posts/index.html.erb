@@ -3,8 +3,12 @@
 	<% @posts.each do |post| %>
 		<li>
             <p>
-		        <%= link_to post.title, post_path(post) %> created by <%= post.user.try(:login) %>
-		        #try mozhno ubrat
+		        <%= link_to post.title, post_path(post) %> created by 
+		        <%= if (post.user.try(:login).nil?)
+		                "Anonymous"
+		            else
+		            	post.user.try(:login)
+		            end%>
 		    </p>
 		    <span>
 		        Post has <%= pluralize post.comments.count, 'comment' %>

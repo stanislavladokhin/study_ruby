@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
 before_action :post, only: [:show, :edit, :update, :destroy]
-before_action :authenticate_user!, only: [:show]
+before_action :authenticate_user!, only: [:show, :edit, :destroy]
   def index
     # instance param
     @posts = Post.all
@@ -16,7 +16,11 @@ before_action :authenticate_user!, only: [:show]
 
   def create
     puts params
-    Post.create(post_params)
+    if (current_user.nil?)
+      Post.create(post_params)
+    else
+      current_user.posts.build(post_params).save
+    end
     #flash[:notice] = "Post was succesfully created"
     redirect_to posts_path, notice: "Post was succesfully created"
   end
@@ -48,7 +52,9 @@ before_action :authenticate_user!, only: [:show]
     end
 
     def post_params
-      params.require(:post).permit(:title, :text)
+      params.require(:post).permit(:user_id, :title, :text)
+      #@temp=current_user
+      #params.require(:post).merge(:user_id=>current_user)
     end 
 
     helper_method :post
