@@ -7,6 +7,9 @@
 		    <div>
 		        <%= comment.message %>
 		    </div>
+		    created by <%= comment.author_name%>
 		</li>
 	<% end %>
 </ul>
+
+<%= render 'comments/form', commentable: commentable %>
