@@ -26,22 +26,36 @@ before_action :authenticate_user!, only: [:show, :edit, :destroy]
   end
 
   def edit 
+    if @post.user!=current_user
+      flash[:notice] = "Post was not yours/ Edit was not allowed"
+      redirect_to posts_path
+    end
   end
 
   def update
-    @post.assign_attributes(post_params)
-    if @post.save
-      flash[:notice] = "Post was succesfully updated"
+    if @post.user!=current_user
+      flash[:notice] = "Post was not yours/ Edit was not allowed"
+      redirect_to posts_path
     else
-      flash[:notice] = "Post was not succesfully updated"
+      @post.assign_attributes(post_params)
+      if @post.save
+        flash[:notice] = "Post was succesfully updated"
+      else
+        flash[:notice] = "Post was not succesfully updated"
+      end
+      redirect_to post_path(@post)
     end
-    redirect_to post_path(@post)
   end
 
   def destroy
-    @post.destroy
+    if @post.user!=current_user
+      flash[:notice] = "Post was not yours/ Delete was not allowed"
+      redirect_to posts_path
+    else
+      @post.destroy
       flash[:notice] = "Post was succesfully deleted"
-    redirect_to posts_path
+      redirect_to posts_path
+    end  
   end
 
   
